@@ -4,6 +4,7 @@ package com.practica.ems.covid;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -67,44 +68,18 @@ public class ContactosCovid {
 	}
 
 	public void loadDataFile(String fichero, boolean reset) {
-		File archivo = null;
 		FileReader fr = null;
-		BufferedReader br = null;
-		String datas[] = null, data = null;
 		try {
-			// Apertura del fichero y creacion de BufferedReader para poder
-			// hacer una lectura comoda (disponer del metodo readLine()).
-			archivo = new File(fichero);
+			File archivo = new File(fichero);
 			fr = new FileReader(archivo);
-			br = new BufferedReader(fr);
-			if (reset) {
-				this.poblacion = new Poblacion();
-				this.localizacion = new Localizacion();
-				this.listaContactos = new ListaContactos();
-			}
-			/**
-			 * Lectura del fichero	línea a línea. Compruebo que cada línea
-			 * tiene el tipo PERSONA o LOCALIZACION y cargo la línea de datos en la
-			 * lista correspondiente. Sino viene ninguno de esos tipos lanzo una excepción
-			 */
-			while ((data = br.readLine()) != null) {
-				datas = dividirEntrada(data.trim());
-				insertarDatos(datas);
-			}
-
+			BufferedReader br = new BufferedReader(fr);
+			if (reset)
+				resetear();
+			leerFichero(br);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// En el finally cerramos el fichero, para asegurarnos
-			// que se cierra tanto si todo va bien como si salta
-			// una excepcion.
-			try {
-				if (null != fr) {
-					fr.close();
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
+			cerrarFichero(fr);
 		}
 	}
 
@@ -161,6 +136,30 @@ public class ContactosCovid {
 		}
 		this.poblacion.getLista().remove(pos);
 		return false;
+	}
+
+	private void resetear(){
+		this.poblacion = new Poblacion();
+		this.localizacion = new Localizacion();
+		this.listaContactos = new ListaContactos();
+	}
+
+	private void leerFichero(BufferedReader br) throws IOException, EmsInvalidNumberOfDataException, EmsDuplicateLocationException, EmsInvalidTypeException, EmsDuplicatePersonException {
+		String datas[] = null, data = null;
+		while ((data = br.readLine()) != null) {
+			datas = dividirEntrada(data.trim());
+			insertarDatos(datas);
+		}
+	}
+
+	private void cerrarFichero(FileReader fr){
+		try {
+			if (null != fr) {
+				fr.close();
+			}
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 	}
 
 	private String[] dividirEntrada(String input) {
