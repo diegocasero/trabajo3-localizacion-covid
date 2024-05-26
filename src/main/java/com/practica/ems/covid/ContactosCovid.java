@@ -14,10 +14,7 @@ import com.practica.excecption.EmsInvalidNumberOfDataException;
 import com.practica.excecption.EmsInvalidTypeException;
 import com.practica.excecption.EmsLocalizationNotFoundException;
 import com.practica.excecption.EmsPersonNotFoundException;
-import com.practica.genericas.Constantes;
-import com.practica.genericas.Coordenada;
-import com.practica.genericas.Persona;
-import com.practica.genericas.PosicionPersona;
+import com.practica.genericas.*;
 import com.practica.lista.ListaContactos;
 
 public class ContactosCovid {
@@ -182,34 +179,24 @@ public class ContactosCovid {
 	}
 
 	private Persona crearPersona(String[] data) {
-		Persona persona = new Persona();
-		for (int i = 1; i < Constantes.MAX_DATOS_PERSONA; i++) {
-			String s = data[i];
-			switch (i) {
-			case 1:
-				persona.setDocumento(s);
-				break;
-			case 2:
-				persona.setNombre(s);
-				break;
-			case 3:
-				persona.setApellidos(s);
-				break;
-			case 4:
-				persona.setEmail(s);
-				break;
-			case 5:
-				persona.setDireccion(s);
-				break;
-			case 6:
-				persona.setCp(s);
-				break;
-			case 7:
-				persona.setFechaNacimiento(Utilidades.parsearFecha(s));
-				break;
-			}
-		}
-		return persona;
+		DatosPersonales datosPersonales = crearDatosPersonales(data);
+		String email = data[4];
+		Ubicacion ubicacion = crearUbicacion(data);
+		return new Persona(datosPersonales, email, ubicacion);
+	}
+
+	private DatosPersonales crearDatosPersonales(String[] data){
+		String documento = data[1];
+		String nombre = data[2];
+		String apellidos = data[3];
+		FechaHora fechaNacimiento = Utilidades.parsearFecha(data[7]);
+		return new DatosPersonales(documento, nombre, apellidos, fechaNacimiento);
+	}
+
+	private Ubicacion crearUbicacion(String[] data){
+		String direccion = data[5];
+		String cp = data[6];
+		return new Ubicacion(direccion, cp);
 	}
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
