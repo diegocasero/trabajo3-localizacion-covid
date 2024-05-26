@@ -16,7 +16,6 @@ import com.practica.excecption.EmsLocalizationNotFoundException;
 import com.practica.excecption.EmsPersonNotFoundException;
 import com.practica.genericas.Constantes;
 import com.practica.genericas.Coordenada;
-import com.practica.genericas.FechaHora;
 import com.practica.genericas.Persona;
 import com.practica.genericas.PosicionPersona;
 import com.practica.lista.ListaContactos;
