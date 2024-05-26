@@ -194,32 +194,22 @@ public class ContactosCovid {
 	}
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
-		PosicionPersona posicionPersona = new PosicionPersona();
-		String fecha = null, hora;
-		float latitud = 0, longitud;
-		for (int i = 1; i < Constantes.MAX_DATOS_LOCALIZACION; i++) {
-			String s = data[i];
-			switch (i) {
-			case 1:
-				posicionPersona.setDocumento(s);
-				break;
-			case 2:
-				fecha = data[i];
-				break;
-			case 3:
-				hora = data[i];
-				posicionPersona.setFechaPosicion(Utilidades.parsearFecha(fecha, hora));
-				break;
-			case 4:
-				latitud = Float.parseFloat(s);
-				break;
-			case 5:
-				longitud = Float.parseFloat(s);
-				posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
-				break;
-			}
-		}
-		return posicionPersona;
+		String documento = data[1];
+		FechaHora fechaPosicion = crearFechaPosicion(data);
+		Coordenada coordenada = crearCoordenada(data);
+		return new PosicionPersona(coordenada, documento, fechaPosicion);
+	}
+
+	private FechaHora crearFechaPosicion(String[] data){
+		String fecha = data[2];
+		String hora = data[3];
+		return Utilidades.parsearFecha(fecha, hora);
+	}
+
+	private Coordenada crearCoordenada(String[] data){
+		float latitud = Float.parseFloat(data[4]);
+		float longitud = Float.parseFloat(data[5]);
+		return new Coordenada(latitud, longitud);
 	}
 
 	private void insertarDatos(String[] datas) throws EmsDuplicateLocationException, EmsInvalidTypeException, EmsInvalidNumberOfDataException, EmsDuplicatePersonException {

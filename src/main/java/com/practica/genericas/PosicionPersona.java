@@ -5,6 +5,13 @@ public class PosicionPersona {
 	private Coordenada coordenada;
 	private String documento;
 	private FechaHora fechaPosicion;
+
+	public PosicionPersona(Coordenada coordenada, String documento, FechaHora fechaPosicion) {
+		this.coordenada = coordenada;
+		this.documento = documento;
+		this.fechaPosicion = fechaPosicion;
+	}
+
 	public Coordenada getCoordenada() {
 		return coordenada;
 	}
