@@ -183,7 +183,7 @@ public class ContactosCovid {
 		String documento = data[1];
 		String nombre = data[2];
 		String apellidos = data[3];
-		FechaHora fechaNacimiento = Utilidades.parsearFecha(data[7]);
+		FechaHora fechaNacimiento = FechaHora.parsearFecha(data[7]);
 		return new DatosPersonales(documento, nombre, apellidos, fechaNacimiento);
 	}
 
@@ -203,7 +203,7 @@ public class ContactosCovid {
 	private FechaHora crearFechaPosicion(String[] data){
 		String fecha = data[2];
 		String hora = data[3];
-		return Utilidades.parsearFecha(fecha, hora);
+		return FechaHora.parsearFecha(fecha, hora);
 	}
 
 	private Coordenada crearCoordenada(String[] data){
