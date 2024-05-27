@@ -1,5 +1,6 @@
 package com.practica.lista;
 
+import com.practica.genericas.Coordenada;
 import com.practica.genericas.FechaHora;
 import com.practica.genericas.PosicionPersona;
 
@@ -14,7 +15,7 @@ public class ListaContactos {
 	 */
 	public void insertarNodoTemporal (PosicionPersona p) {
 		NodoTemporal nt = buscarNodoTemporal(p);
-		nodoPersonaEnCoordenadas(p,nt);
+		personaEnCoordenadas(p,nt);
 	}
 
 	private NodoTemporal buscarNodoTemporal(PosicionPersona p){
@@ -47,26 +48,32 @@ public class ListaContactos {
 		return nuevo;
 	}
 
-	private void nodoPersonaEnCoordenadas(PosicionPersona p, NodoTemporal nt){
+	private void personaEnCoordenadas(PosicionPersona p, NodoTemporal nt){
+		NodoPosicion np = buscarNodoPosicion(nt, p.getCoordenada());
+		np.incrementarNumPersonas();
+	}
+
+	private NodoPosicion buscarNodoPosicion(NodoTemporal nt, Coordenada coordenada){
 		NodoPosicion npActual = nt.getListaCoordenadas();
 		NodoPosicion npAnt=null;
-		boolean npEncontrado = false;
-		while (npActual!=null && !npEncontrado) {
-			if(npActual.getCoordenada().equals(p.getCoordenada())) {
-				npEncontrado=true;
-				npActual.setNumPersonas(npActual.getNumPersonas()+1);
+		while (npActual!=null) {
+			if(npActual.getCoordenada().equals(coordenada)) {
+				return npActual;
 			}else {
 				npAnt = npActual;
 				npActual = npActual.getSiguiente();
 			}
 		}
-		if(!npEncontrado) {
-			NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(),1, null);
-			if(nt.getListaCoordenadas()==null)
-				nt.setListaCoordenadas(npNuevo);
-			else
-				npAnt.setSiguiente(npNuevo);
-		}
+		return crearNodoPosicion(nt, npAnt, coordenada);
+	}
+
+	private NodoPosicion crearNodoPosicion(NodoTemporal nt, NodoPosicion npAnt, Coordenada coordenada){
+		NodoPosicion npNuevo = new NodoPosicion(coordenada,0, null);
+		if(nt.getListaCoordenadas()==null)
+			nt.setListaCoordenadas(npNuevo);
+		else
+			npAnt.setSiguiente(npNuevo);
+		return npNuevo;
 	}
 
 	public int personasEnCoordenadas () {

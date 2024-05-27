@@ -56,5 +56,8 @@ public class NodoPosicion {
 	public void setSiguiente(NodoPosicion siguiente) {
 		this.siguiente = siguiente;
 	}
-	
+
+	public void incrementarNumPersonas(){
+		this.numPersonas++;
+	}
 }
