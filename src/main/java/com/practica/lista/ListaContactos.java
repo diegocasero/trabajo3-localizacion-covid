@@ -7,15 +7,10 @@ import com.practica.genericas.PosicionPersona;
 public class ListaContactos {
 	private NodoTemporal lista;
 	private int size;
-	
-	/**
-	 * Insertamos en la lista de nodos temporales, y a la vez inserto en la lista de nodos de coordenadas. 
-	 * En la lista de coordenadas metemos el documento de la persona que está en esa coordenada 
-	 * en un instante 
-	 */
+
 	public void insertarNodoTemporal (PosicionPersona p) {
 		NodoTemporal nt = buscarNodoTemporal(p);
-		personaEnCoordenadas(p,nt);
+		posicionEnCoordenadas(p,nt);
 	}
 
 	private NodoTemporal buscarNodoTemporal(PosicionPersona p){
@@ -48,7 +43,7 @@ public class ListaContactos {
 		return nuevo;
 	}
 
-	private void personaEnCoordenadas(PosicionPersona p, NodoTemporal nt){
+	private void posicionEnCoordenadas(PosicionPersona p, NodoTemporal nt){
 		NodoPosicion np = buscarNodoPosicion(nt, p.getCoordenada());
 		np.incrementarNumPersonas();
 	}
