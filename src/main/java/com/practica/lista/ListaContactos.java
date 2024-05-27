@@ -13,48 +13,41 @@ public class ListaContactos {
 	 * en un instante 
 	 */
 	public void insertarNodoTemporal (PosicionPersona p) {
-		NodoTemporal aux = lista, ant=null;
-		boolean salir=false,  encontrado = false;
-		/**
-		 * Busco la posición adecuada donde meter el nodo de la lista, excepto
-		 * que esté en la lista. Entonces solo añadimos una coordenada.
-		 */
-		while (aux!=null && !salir) {
-			if(aux.getFecha().compareTo(p.getFechaPosicion())==0) {
-				encontrado = true;
-				salir = true;
-				nodoPosicionEnCoordenadas(p,aux);
-			}else if(aux.getFecha().compareTo(p.getFechaPosicion())<0) {
-				ant = aux;
-				aux=aux.getSiguiente();
-			}else if(aux.getFecha().compareTo(p.getFechaPosicion())>0) {
+		NodoTemporal nt = buscarNodoTemporal(p);
+		nodoPersonaEnCoordenadas(p,nt);
+	}
+
+	private NodoTemporal buscarNodoTemporal(PosicionPersona p){
+		NodoTemporal nt = lista, ant = null;
+		boolean salir = false;
+		while (nt!=null && !salir) {
+			if(nt.getFecha().compareTo(p.getFechaPosicion())==0) {
+				return nt;
+			}else if(nt.getFecha().compareTo(p.getFechaPosicion())<0) {
+				ant = nt;
+				nt=nt.getSiguiente();
+			}else if(nt.getFecha().compareTo(p.getFechaPosicion())>0) {
 				salir=true;
 			}
 		}
-		/**
-		 * No hemos encontrado ninguna posición temporal, así que
-		 * metemos un nodo nuevo en la lista
-		 */
-		if(!encontrado) {
-			NodoTemporal nuevo = new NodoTemporal();
-			nuevo.setFecha(p.getFechaPosicion());
-			nodoPosicionEnCoordenadas(p,nuevo);
-			if(ant!=null) {
-				nuevo.setSiguiente(aux);
-				ant.setSiguiente(nuevo);
-			}else {
-				nuevo.setSiguiente(lista);
-				lista = nuevo;
-			}
-			this.size++;
-			
-		}
+		return crearNodoTemporal(ant, nt, p);
 	}
 
-	private void nodoPosicionEnCoordenadas(PosicionPersona p, NodoTemporal nt){
-		/**
-		 * Insertamos en la lista de coordenadas
-		 */
+	private NodoTemporal crearNodoTemporal(NodoTemporal ant, NodoTemporal sig, PosicionPersona p){
+		NodoTemporal nuevo = new NodoTemporal();
+		nuevo.setFecha(p.getFechaPosicion());
+		if(ant!=null) {
+			nuevo.setSiguiente(sig);
+			ant.setSiguiente(nuevo);
+		}else {
+			nuevo.setSiguiente(lista);
+			lista = nuevo;
+		}
+		this.size++;
+		return nuevo;
+	}
+
+	private void nodoPersonaEnCoordenadas(PosicionPersona p, NodoTemporal nt){
 		NodoPosicion npActual = nt.getListaCoordenadas();
 		NodoPosicion npAnt=null;
 		boolean npEncontrado = false;
